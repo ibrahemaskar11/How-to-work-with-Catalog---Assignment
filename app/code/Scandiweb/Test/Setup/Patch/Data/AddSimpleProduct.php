@@ -68,40 +68,33 @@
         public function apply()
         {
             $this->moduleDataSetup->getConnection()->startSetup();
+            $this->appState->setAreaCode('adminhtml');
 
-            // Set Area Code to 'adminhtml' to ensure proper context
-            try {
-                $this->appState->setAreaCode('adminhtml');
-            } catch (\Magento\Framework\Exception\LocalizedException $e) {
-                // Area code is already set, no action needed
-            }
 
             // Define product data
             $productData = [
                 'sku' => 'scandiweb-simple-product',
                 'name' => 'Scandiweb Simple Product',
-                'attribute_set_id' => 4, // Default attribute set ID
+                'attribute_set_id' => 4,
                 'price' => 49.99,
-                'status' => 1, // Enabled
-                'visibility' => 4, // Catalog, Search
+                'status' => 1,
+                'visibility' => 4,
                 'type_id' => 'simple',
                 'weight' => 1,
                 'description' => 'This is a simple product added by Scandiweb_Test module.',
                 'short_description' => 'Simple product description.',
-                'tax_class_id' => 2, // Taxable Goods
-                'category_ids' => [3], // Assign to category ID 3 (e.g., Men)
+                'tax_class_id' => 2,
+                'category_ids' => [3], // MEN
                 'qty' => 100,
                 'is_in_stock' => 1,
             ];
 
-            // Check if the product already exists
             try {
                 $existingProduct = $this->productRepository->get($productData['sku']);
-                // If product exists, skip creation
                 $this->moduleDataSetup->getConnection()->endSetup();
                 return;
             } catch (\Magento\Framework\Exception\NoSuchEntityException $e) {
-                // Product does not exist, proceed to create
+
             }
 
             /** @var \Magento\Catalog\Model\Product $product */
